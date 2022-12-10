@@ -35,7 +35,7 @@ public class GameController : MonoBehaviour
         int noising = 0;
         //Check noise count and end game if reached max limit
         foreach (Unit unit in units)
-            if (unit.noise >= 1f)
+            if (unit.noise > 0f)
                 noising++;
         if(units.Length == noising)
         {

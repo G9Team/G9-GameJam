@@ -6,6 +6,7 @@ using UnityEditor;
 #endif
 using UnityEngine;
 using UnityEngine.UIElements;
+using UnityEngine.Events;
 
 public class Unit : MonoBehaviour
 {
@@ -17,11 +18,11 @@ public class Unit : MonoBehaviour
     const float _unitDistance = 5f; //distance
 
 
-    [SerializeField] private float _timeToFullNoize;
-    public float noise= 0f;
+    [SerializeField] private float _timeToFullNoise;
+    [SerializeField] private UnitUI _unitUI;
+    public float noise = 0f;
     Player _player;
     GameController _controller;
-
     void Start()
     {
         GameController.onTick += OnTick;
@@ -43,26 +44,33 @@ public class Unit : MonoBehaviour
                 chance += unit.noise == 0f ? _nearestNoiseChance * unit.noise : _nearestSilentChance;
         }
         if (Random.Range(0.0f, 1.0f) < chance)
+            {
             noise = 0.01f;
+            _unitUI.ActivateNoiseImage();
+            }
     }
 
     void Update()
     {
         if (noise > 0f)
         {
-            noise = Mathf.MoveTowards(noise, 1f, Time.deltaTime * _timeToFullNoize);
+            noise = Mathf.MoveTowards(noise, 1f, Time.deltaTime * _timeToFullNoise);
         }
-
+        RaycastHit hit;
+        if (Physics.Raycast(this.transform.position, _player.transform.position - transform.position, out hit, Player.noiseConsilationDistance))
         {
+            _unitUI.ActivateButtonImage();
             if(Input.GetKeyDown(KeyCode.E))
             {
-                RaycastHit hit;
-                if (Physics.Raycast(this.transform.position, _player.transform.position - transform.position, out hit, Player.noiseConsilationDistance))
+               
                 if(hit.transform.GetComponent<Player>() != null)
                     {
-                        if (noise == 1f)
+                        if (noise > 0f){
                             _controller.AddToScore();
-                        noise = 0f;
+                            noise = 0f;
+                            _unitUI.ActivateNoiseImage();
+                            _unitUI.ActivateButtonImage();
+                        }
                     }
             }
         }
