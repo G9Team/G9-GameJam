@@ -129,6 +129,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 17df79c9433cf4b98af6663a3c681be6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _timeToFullNoize: 0.5
   noise: 0
 --- !u!65 &3954099971441395694
 BoxCollider:

@@ -17,6 +17,7 @@ public class Unit : MonoBehaviour
     const float _unitDistance = 5f; //distance
 
 
+    [SerializeField] private float _timeToFullNoize;
     public float noise= 0f;
     Player _player;
     GameController _controller;
@@ -49,7 +50,7 @@ public class Unit : MonoBehaviour
     {
         if (noise > 0f)
         {
-            noise = Mathf.MoveTowards(noise, 1f, Time.deltaTime * 0.5f);
+            noise = Mathf.MoveTowards(noise, 1f, Time.deltaTime * _timeToFullNoize);
         }
 
         {

@@ -83,7 +83,7 @@ public class GameController : MonoBehaviour
                 Destroy(unit.gameObject);
             }
 
-        units = new Unit[Random.Range(2, 5)];
+        units = new Unit[Random.Range(5, 8)];
         List<Transform> spawnpoints = new List<Transform>();
         for(int i = 0; i < SpawnPointsParent.childCount; i++)
         {
