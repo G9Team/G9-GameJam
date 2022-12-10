@@ -1,12 +1,15 @@
 #define DEBUG_GUI //show debug GUI
 
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Random = UnityEngine.Random;
 
 public class GameController : MonoBehaviour
 {
     public int score = 0;
+    public float gameTime = 600f;
 
     public GameObject Unit;
     public Transform SpawnPointsParent;
@@ -36,9 +39,7 @@ public class GameController : MonoBehaviour
                 noising++;
         if(units.Length == noising)
         {
-            CancelInvoke("Tick");
-            _gameOver = true;
-            GameScores.SaveScoreToFile(new GameScores.PlayerScore() { name = "TestScore", highscore = score });
+            StopGame();
         }
     }
 
@@ -51,6 +52,21 @@ public class GameController : MonoBehaviour
         }
         if (Input.GetKeyDown(KeyCode.R)) //Restart game
             CreateScene();
+        if(_gameStarted && !_gameOver)
+        {
+            gameTime -= Time.deltaTime;
+            if(gameTime <= 0f)
+            {
+                StopGame();
+            }
+        }
+    }
+
+    void StopGame()
+    {
+        CancelInvoke("Tick");
+        _gameOver = true;
+        GameScores.SaveScoreToFile(new GameScores.PlayerScore() { name = "TestScore", highscore = score });
     }
 
     void CreateScene()
@@ -99,12 +115,14 @@ public class GameController : MonoBehaviour
             GUI.Label(new Rect(0, 30, 320, 30), "Game Over. Press R to Restart");
         else
         {
-            GUI.Label(new Rect(0, 30, 320, 30), "Debug Logs:");
+            TimeSpan time = TimeSpan.FromSeconds(gameTime);
+            GUI.Label(new Rect(0, 15, 320, 30), "Time: " + time.ToString("mm':'ss"));
+            GUI.Label(new Rect(0, 45, 320, 30), "Debug Logs:");
             int noising = 0;
             foreach(Unit unit in FindObjectsOfType<Unit>())
                 if (unit.noise > 0f)
                     noising++;
-            GUI.Label(new Rect(0, 45, 320, 30), $"Noising units: {noising}/{units.Length}");
+            GUI.Label(new Rect(0, 60, 320, 30), $"Noising units: {noising}/{units.Length}");
         }
     }
 #endif

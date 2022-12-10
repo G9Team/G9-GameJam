@@ -320,6 +320,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   score: 0
+  gameTime: 1
   Unit: {fileID: 1444200831}
   SpawnPointsParent: {fileID: 226443153}
   eventsPerSeconds: 1
