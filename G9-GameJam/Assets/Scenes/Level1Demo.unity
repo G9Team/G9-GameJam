@@ -3060,6 +3060,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 825ba92474b368143b360063f4630a46, type: 3}
+--- !u!4 &826011991 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 4914084183769793568, guid: 9799c5050c034e64686540be283b171a, type: 3}
+  m_PrefabInstance: {fileID: 232405893}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &850831876
 GameObject:
   m_ObjectHideFlags: 0
@@ -6003,7 +6008,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7173cf454467ca540b631b831bd22dcd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  target: {fileID: 0}
+  target: {fileID: 826011991}
   smoothTime: 0
 --- !u!81 &1478114776
 AudioListener:

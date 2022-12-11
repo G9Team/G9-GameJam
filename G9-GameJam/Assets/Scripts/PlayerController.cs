@@ -24,6 +24,7 @@ public class PlayerController : MonoBehaviour
 
     private void FixedUpdate()
     {
+        if (Input.GetKeyDown(KeyCode.E)) playerAnimator.SetTrigger("Bash");
         Look();
         Move();
     }
