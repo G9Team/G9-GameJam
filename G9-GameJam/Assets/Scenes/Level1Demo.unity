@@ -3394,7 +3394,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   score: 0
-  gameTime: 150
+  gameTime: 120
   Unit:
   - {fileID: 3954099971441395475, guid: 1b922d47085901740901c431b09abae4, type: 3}
   - {fileID: 3954099971441395475, guid: ea7e3e28e04245b44aa2d77926e8d1a5, type: 3}
