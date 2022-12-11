@@ -76,7 +76,7 @@ public class GameController : MonoBehaviour
         CancelInvoke("Tick");
         _gameOver = true;
         
-        GameScores.SaveScoreToFile(new GameScores.PlayerScore() { name = "TestScore", highscore = score });
+        GameScores.SaveScoreToFile(1 ,new GameScores.PlayerScore() { name = "TestScore", highscore = score });
     }
 
     void CreateScene()
