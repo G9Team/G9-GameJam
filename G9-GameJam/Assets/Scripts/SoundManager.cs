@@ -9,12 +9,21 @@ public class SoundManager : MonoBehaviour
     private int _firstPlayInt;
     private float _musicFloat;
 
-    [SerializeField] private Slider musicSlider;    
+    private Slider musicSlider;    
     [SerializeField] private AudioSource musicAudio;
     [SerializeField] private AudioClip buttonSound;
 
     void Start()
     {
+        GameObject[] objs = GameObject.FindGameObjectsWithTag("music");
+        if (objs.Length > 1)
+        {
+            Destroy(this.gameObject);
+        }
+        DontDestroyOnLoad(this.gameObject);
+
+        
+
         _firstPlayInt = PlayerPrefs.GetInt(firstPlay);
 
         if (_firstPlayInt == 0)
