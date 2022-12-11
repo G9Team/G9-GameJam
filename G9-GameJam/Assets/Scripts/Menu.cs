@@ -36,6 +36,7 @@ public class Menu : MonoBehaviour
     private IEnumerator AsyncLoad(int index)
     {
         AsyncOperation ready = null;
+        Time.timeScale = 1f;
         ready = SceneManager.LoadSceneAsync(index);
         while (!ready.isDone)
         {
