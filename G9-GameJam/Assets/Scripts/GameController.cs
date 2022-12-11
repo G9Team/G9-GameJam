@@ -14,6 +14,8 @@ public class GameController : MonoBehaviour
     public GameObject Unit;
     public Transform SpawnPointsParent;
 
+    private MainUIContoller _uiController;
+
     //Events
     public float eventsPerSeconds = 1f;
     public static System.Action onTick;
@@ -26,7 +28,10 @@ public class GameController : MonoBehaviour
 
     private void Awake()
     {
+        _uiController = FindObjectOfType<MainUIContoller>();
         CreateScene();
+         _gameStarted = true;
+            InvokeRepeating("Tick", 1f / eventsPerSeconds, 1f / eventsPerSeconds);
     }
 
     void Tick()
@@ -40,11 +45,13 @@ public class GameController : MonoBehaviour
         if(units.Length == noising)
         {
             StopGame();
+            _uiController.ActivateGameOverPanel();
         }
     }
 
     private void Update()
     {
+        /*
         if(!_gameStarted && Input.GetKeyDown(KeyCode.Space)) //Start game
         {
             _gameStarted = true;
@@ -52,9 +59,11 @@ public class GameController : MonoBehaviour
         }
         if (Input.GetKeyDown(KeyCode.R)) //Restart game
             CreateScene();
+        */
         if(_gameStarted && !_gameOver)
         {
             gameTime -= Time.deltaTime;
+            _uiController.DisplayTimer(TimeSpan.FromSeconds(gameTime));
             if(gameTime <= 0f)
             {
                 StopGame();
@@ -66,6 +75,7 @@ public class GameController : MonoBehaviour
     {
         CancelInvoke("Tick");
         _gameOver = true;
+        
         GameScores.SaveScoreToFile(new GameScores.PlayerScore() { name = "TestScore", highscore = score });
     }
 
@@ -92,16 +102,19 @@ public class GameController : MonoBehaviour
         for(int i = 0; i < units.Length; i++)
         {
             Transform selectedPoint = spawnpoints[Random.Range(0, spawnpoints.Count)];
-            units[i] = Instantiate(Unit, selectedPoint.position, Quaternion.identity).GetComponent<Unit>();
+            units[i] = Instantiate(Unit, selectedPoint.position, selectedPoint.rotation).GetComponent<Unit>();
             units[i].gameObject.SetActive(true);
             spawnpoints.Remove(selectedPoint);
         }
+        _uiController.SetUnitsArray(units);
     }
 
     public void AddToScore()
     {
-        if(_gameStarted && !_gameOver)
+        if(_gameStarted && !_gameOver){
             score++;
+            _uiController.DisplayScore(score);
+        }
     }
 
     #region DEBUG

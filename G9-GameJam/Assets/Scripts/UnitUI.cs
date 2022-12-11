@@ -5,19 +5,21 @@ using UnityEngine;
 public class UnitUI : MonoBehaviour
 {
     [SerializeField] private GameObject _noiseImage, _buttonImage;
-    private Camera _mainCamera;
+    private GameObject _mainCameraLandmark;
     private bool _isMakingNoise = false;
-    private void Awake() {
-        _mainCamera = FindObjectOfType<Camera>();
+    private void Start() {
+        _mainCameraLandmark = GameObject.FindGameObjectWithTag("CameraLandmark");
         FaceToCamera();
     }
     private void FaceToCamera() =>
-            transform.localRotation = Quaternion.LookRotation(_mainCamera.transform.position);
+            transform.rotation = Quaternion.LookRotation(_mainCameraLandmark.transform.position);
     public void ActivateNoiseImage(){
         _noiseImage.SetActive(!_noiseImage.activeSelf);
         _isMakingNoise = !_isMakingNoise;
     } 
     public void ActivateButtonImage(){
-        if (_isMakingNoise) _buttonImage.SetActive(!_buttonImage.activeSelf);
+        if (_isMakingNoise) _buttonImage.SetActive(true);
     }
+    public void DeactivateButtonImage() => _buttonImage.SetActive(false);
+
 }

@@ -44,10 +44,10 @@ public class Unit : MonoBehaviour
                 chance += unit.noise == 0f ? _nearestNoiseChance * unit.noise : _nearestSilentChance;
         }
         if (Random.Range(0.0f, 1.0f) < chance)
-            {
+        {
             noise = 0.01f;
             _unitUI.ActivateNoiseImage();
-            }
+        }
     }
 
     void Update()
@@ -55,23 +55,29 @@ public class Unit : MonoBehaviour
         if (noise > 0f)
         {
             noise = Mathf.MoveTowards(noise, 1f, Time.deltaTime * _timeToFullNoise);
-        }
-        RaycastHit hit;
-        if (Physics.Raycast(this.transform.position, _player.transform.position - transform.position, out hit, Player.noiseConsilationDistance))
-        {
-            _unitUI.ActivateButtonImage();
-            if(Input.GetKeyDown(KeyCode.E))
+            RaycastHit hit;
+            if (!Physics.Raycast(this.transform.position, _player.transform.position - transform.position, out hit, Player.noiseConsilationDistance))
             {
-               
-                if(hit.transform.GetComponent<Player>() != null)
+                _unitUI.DeactivateButtonImage();
+            }
+            else
+            {
+                if (hit.transform.GetComponent<Player>() is null)
+                {
+
+                    _unitUI.DeactivateButtonImage();
+                }
+                else
+                {
+                    _unitUI.ActivateButtonImage();
+                    if (Input.GetKeyDown(KeyCode.E))
                     {
-                        if (noise > 0f){
-                            _controller.AddToScore();
-                            noise = 0f;
-                            _unitUI.ActivateNoiseImage();
-                            _unitUI.ActivateButtonImage();
-                        }
+                        _controller.AddToScore();
+                        noise = 0f;
+                        _unitUI.ActivateNoiseImage();
+                        _unitUI.DeactivateButtonImage();
                     }
+                }
             }
         }
     }
@@ -84,7 +90,7 @@ public class Unit : MonoBehaviour
         GUIStyle style = new GUIStyle();
         style.normal.textColor = Color.black;
         style.alignment = TextAnchor.UpperCenter;
-        if(noise == 0f)
+        if (noise == 0f)
             GUI.Label(new Rect(guiPoint.x - 50, guiPoint.y - 30, 100f, 30f), "Silent", style);
         else
             GUI.Label(new Rect(guiPoint.x - 50, guiPoint.y - 30, 100f, 30f), "Noising", style);
