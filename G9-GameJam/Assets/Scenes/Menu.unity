@@ -3704,7 +3704,7 @@ GameObject:
   - component: {fileID: 1067209918}
   m_Layer: 0
   m_Name: Sound
-  m_TagString: Untagged
+  m_TagString: music
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -3737,7 +3737,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7d92ced9fbab11742bf3318d0a2b0e33, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  musicSlider: {fileID: 1454468010}
   musicAudio: {fileID: 1803786578}
   buttonSound: {fileID: 8300000, guid: 18aa3ee6d25da0645957bf8e8e9f51d9, type: 3}
 --- !u!1 &1081122834

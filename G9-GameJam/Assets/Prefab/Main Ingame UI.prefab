@@ -4477,8 +4477,8 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 4827703011924309791}
         m_TargetAssemblyTypeName: Menu, Assembly-CSharp
-        m_MethodName: QuitGame
-        m_Mode: 1
+        m_MethodName: OpenNewScene
+        m_Mode: 3
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
