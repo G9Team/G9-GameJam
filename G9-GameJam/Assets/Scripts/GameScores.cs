@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using UnityEngine;
 using System.IO;
 using System;
+using Newtonsoft.Json;
+using UnityEditor.Experimental.GraphView;
 
 public class GameScores
 {
@@ -12,57 +14,86 @@ public class GameScores
         public string name;
         public int highscore;
     }
-    public static PlayerScore[] GetScores()
+    public static PlayerScore[] GetScores(int level)
     {
         if (!File.Exists(Path.Combine(Application.persistentDataPath, "scores.json"))) return null;
-        return JsonHelper.FromJson<PlayerScore>(File.ReadAllText(Path.Combine(Application.persistentDataPath, "scores.json")));
+        try
+        {
+            Dictionary<int, PlayerScore[]> all_scores = JsonConvert.DeserializeObject<Dictionary<int, PlayerScore[]>>(File.ReadAllText(Path.Combine(Application.persistentDataPath, "scores.json")));
+            return all_scores.ContainsKey(level) ? all_scores[level] : null;
+        }
+        catch(System.Exception e) //json component mismatch
+        {
+            File.Delete(Path.Combine(Application.persistentDataPath, "scores.json"));
+            return null;
+        }
     }
 
-    public static void SaveScoreToFile(PlayerScore score)
+    public static void SaveScoreToFile(int level, PlayerScore score)
     {
-        PlayerScore[] scores = null;
-        if (!File.Exists(Path.Combine(Application.persistentDataPath, "scores.json")))
-            scores = new PlayerScore[1];
-        else
+        Dictionary<int, PlayerScore[]> scores = new Dictionary<int, PlayerScore[]>();
+        if (File.Exists(Path.Combine(Application.persistentDataPath, "scores.json")))
         {
-            scores = JsonHelper.FromJson<PlayerScore>(File.ReadAllText(Path.Combine(Application.persistentDataPath, "scores.json")));
-            PlayerScore[] newScores = new PlayerScore[scores.Length + 1];
-            for(int i = 0; i < scores.Length; i++)
+            try
             {
-                newScores[i] = scores[i];
+                scores = JsonConvert.DeserializeObject<Dictionary<int, PlayerScore[]>>(File.ReadAllText(Path.Combine(Application.persistentDataPath, "scores.json")));
             }
-            scores = newScores;
+            catch (System.Exception e) //json component mismatch
+            {
+                File.Delete(Path.Combine(Application.persistentDataPath, "scores.json"));
+            }
+            if (!scores.ContainsKey(level))
+                scores.Add(level, new PlayerScore[1]);
+            PlayerScore[] newScores = new PlayerScore[scores[level].Length + 1];
+            for(int i = 0; i < scores[level].Length; i++)
+            {
+                newScores[i] = scores[level][i];
+            }
+            newScores[newScores.Length - 1] = score;
+            Sort(newScores, 0, newScores.Length - 1);
+            if (newScores.Length > 10)
+            {
+                scores[level] = new PlayerScore[10];
+                for (int i = 0; i < scores[level].Length; i++)
+                    scores[level][i] = newScores[i];
+            }
+            else
+                scores[level] = newScores;
         }
-        scores[scores.Length - 1] = score;
-        File.WriteAllText(Path.Combine(Application.persistentDataPath, "scores.json"), JsonHelper.ToJson<PlayerScore>(scores));
+        File.WriteAllText(Path.Combine(Application.persistentDataPath, "scores.json"), JsonConvert.SerializeObject(scores));
     }
 
-    class JsonHelper
+    static void Sort(PlayerScore[] arr, int start, int end)
     {
-        public static T[] FromJson<T>(string json)
-        {
-            Wrapper<T> wrapper = JsonUtility.FromJson<Wrapper<T>>(json);
-            return wrapper.Items;
-        }
+        int i = start;
+        int j = end;
+        PlayerScore tmp;
+        int sort_tmp;
+        PlayerScore x = arr[(i + j) / 2];
 
-        public static string ToJson<T>(T[] array)
+        do
         {
-            Wrapper<T> wrapper = new Wrapper<T>();
-            wrapper.Items = array;
-            return JsonUtility.ToJson(wrapper);
-        }
+            while (arr[i].highscore > x.highscore)
+                i++;
+            while (arr[j].highscore < x.highscore)
+                j--;
+            if (i <= j)
+            {
+                if (i < j)
+                {
 
-        public static string ToJson<T>(T[] array, bool prettyPrint)
-        {
-            Wrapper<T> wrapper = new Wrapper<T>();
-            wrapper.Items = array;
-            return JsonUtility.ToJson(wrapper, prettyPrint);
-        }
+                    tmp = arr[i];
+                    arr[i] = arr[j];
+                    arr[j] = tmp;
+                }
+                i++;
+                j--;
+            }
+        } while (i <= j);
 
-        [Serializable]
-        private class Wrapper<T>
-        {
-            public T[] Items;
-        }
+        if (i < end)
+            Sort(arr, i, end);
+        if (start < j)
+            Sort(arr, start, j);
     }
 }

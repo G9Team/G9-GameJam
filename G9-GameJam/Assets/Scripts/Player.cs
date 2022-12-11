@@ -10,7 +10,6 @@ public class Player : MonoBehaviour
 {
     public static float noiseConsilationDistance = 3f;
 
-
     #region DEBUG
 #if DEBUG_GUI
     private void OnDrawGizmos()
