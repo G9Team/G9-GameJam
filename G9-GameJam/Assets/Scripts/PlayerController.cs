@@ -46,7 +46,18 @@ public class PlayerController : MonoBehaviour
 
     private void Move()
     {
-        playerRigidbody.MovePosition(transform.position + transform.forward * _input.normalized.magnitude * _speed * Time.deltaTime);
+        MovePosition(transform.position + transform.forward * _input.normalized.magnitude * _speed * Time.deltaTime);
+    }
+
+    void MovePosition(Vector3 position)
+    {
+        Vector3 oldVel = playerRigidbody.velocity;
+        Vector3 delta = position - playerRigidbody.position;
+        Vector3 vel = delta / Time.deltaTime;
+        vel.y = oldVel.y;
+        vel.x = Mathf.Abs(oldVel.x) > Mathf.Abs(vel.x) ? oldVel.x : vel.x;
+        vel.z = Mathf.Abs(oldVel.z) > Mathf.Abs(vel.z) ? oldVel.z : vel.z;
+        playerRigidbody.velocity = vel;
     }
 }
 
