@@ -6,6 +6,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using Random = UnityEngine.Random;
+using UnityEngine.SceneManagement;
 
 public class GameController : MonoBehaviour
 {
@@ -92,8 +93,8 @@ public class GameController : MonoBehaviour
             {
                 Destroy(unit.gameObject);
             }
-
-        units = new Unit[Random.Range(5, 8)];
+        int difficultyLevel = SceneManager.GetActiveScene().buildIndex;
+        units = new Unit[Random.Range(5 + difficultyLevel, 8 + difficultyLevel)];
         List<Transform> spawnpoints = new List<Transform>();
         for (int i = 0; i < SpawnPointsParent.childCount; i++)
         {
