@@ -20,14 +20,18 @@ public class Unit : MonoBehaviour
 
     [SerializeField] private float _timeToFullNoise;
     [SerializeField] private UnitUI _unitUI;
+    [SerializeField] private Animator _animator;
     public float noise = 0f;
     Player _player;
     GameController _controller;
+    public PositionType _positionType;
     void Start()
     {
         GameController.onTick += OnTick;
         _player = FindObjectOfType<Player>();
         _controller = FindObjectOfType<GameController>();
+        _animator.SetBool("IsSitting", _positionType == PositionType.Sit);
+        Debug.Log(_positionType);
     }
 
     void OnTick()
@@ -47,9 +51,14 @@ public class Unit : MonoBehaviour
         {
             noise = 0.01f;
             _unitUI.ActivateNoiseImage();
+            _animator.SetBool("IsNoising", true);
         }
     }
 
+    public void SetPositionType(PositionType type){
+        _positionType = type;
+        
+    }
     void Update()
     {
         if (noise > 0f)
@@ -74,6 +83,7 @@ public class Unit : MonoBehaviour
                     {
                         _controller.AddToScore();
                         noise = 0f;
+                        _animator.SetBool("IsNoising", false);
                         _unitUI.ActivateNoiseImage();
                         _unitUI.DeactivateButtonImage();
                     }
