@@ -14,6 +14,15 @@ public class GameScores
         public string name;
         public int highscore;
     }
+    public static bool IsHighScore(int scoreToCheck, int sceneIndex){
+        PlayerScore[] scores = GetScores(sceneIndex);
+        if (scores is null) return true;
+        foreach (var highscore in scores)
+        {
+            if (highscore.highscore < scoreToCheck) return true;
+        }
+        return false;
+    }
     public static PlayerScore[] GetScores(int level)
     {
         if (!File.Exists(Path.Combine(Application.persistentDataPath, "scores.json"))) return null;
