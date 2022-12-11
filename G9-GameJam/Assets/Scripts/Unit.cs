@@ -23,6 +23,7 @@ public class Unit : MonoBehaviour
     public float noise = 0f;
     Player _player;
     GameController _controller;
+    public PositionType _positionType;
     void Start()
     {
         GameController.onTick += OnTick;
@@ -50,6 +51,9 @@ public class Unit : MonoBehaviour
         }
     }
 
+    public void SetPositionType(PositionType type){
+        _positionType = type;
+    }
     void Update()
     {
         if (noise > 0f)

@@ -53,7 +53,7 @@ public class MainUIContoller : MonoBehaviour
     }
     public void OnLeaderboardButtonDown(){
         GameScores.SaveScoreToFile(SceneManager.GetActiveScene().buildIndex, 
-                                   new GameScores.PlayerScore() {name = _inputField.text, highscore = _currentScore});
+                                   new GameScores.PlayerScore() {name = _inputField.text.ToUpper(), highscore = _currentScore});
         _inputField.gameObject.SetActive(false);
         _leaderboardButton.SetActive(false);
         _nextLevelButton.SetActive(true);

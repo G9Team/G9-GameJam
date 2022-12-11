@@ -103,6 +103,7 @@ public class GameController : MonoBehaviour
             Transform selectedPoint = spawnpoints[Random.Range(0, spawnpoints.Count)];
             units[i] = Instantiate(Unit, selectedPoint.position, selectedPoint.rotation).GetComponent<Unit>();
             units[i].gameObject.SetActive(true);
+            units[i].SetPositionType((PositionType)Convert.ToInt32(selectedPoint.tag));
             spawnpoints.Remove(selectedPoint);
         }
         _uiController.SetUnitsArray(units);

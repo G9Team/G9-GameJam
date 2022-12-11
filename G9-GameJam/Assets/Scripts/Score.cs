@@ -1,6 +1,7 @@
 using System;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.SceneManagement;
 
 public class Score : MonoBehaviour
 {
@@ -13,6 +14,9 @@ public class Score : MonoBehaviour
         entryTemplate = entryContainer.Find("hightScoreTemplate");
 
         entryTemplate.gameObject.SetActive(false);
+        int buildIndex = SceneManager.GetActiveScene().buildIndex;
+        if (buildIndex == 0) buildIndex = 1;
+        ChooseLevel(buildIndex);
     }
 
     public void ChooseLevel(int level)
