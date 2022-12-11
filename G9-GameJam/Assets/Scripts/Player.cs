@@ -1,4 +1,6 @@
+#if UNITY_EDITOR
 #define DEBUG_GUI //show debug GUI
+#endif
 using System.Collections;
 using System.Collections.Generic;
 #if DEBUG_GUI
