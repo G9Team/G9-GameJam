@@ -102,7 +102,7 @@ public class GameController : MonoBehaviour
         {
             Transform selectedPoint = spawnpoints[Random.Range(0, spawnpoints.Count)];
             int unitIndexer = i % Unit.Length;
-            units[i] = Instantiate(Unit[i], selectedPoint.position, selectedPoint.rotation).GetComponent<Unit>();
+            units[i] = Instantiate(Unit[unitIndexer], selectedPoint.position, selectedPoint.rotation).GetComponent<Unit>();
             units[i].gameObject.SetActive(true);
             units[i].SetPositionType((PositionType)Convert.ToInt32(selectedPoint.tag));
             spawnpoints.Remove(selectedPoint);
