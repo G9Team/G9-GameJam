@@ -11,7 +11,7 @@ public class GameController : MonoBehaviour
     public int score = 0;
     public float gameTime = 600f;
 
-    public GameObject Unit;
+    public GameObject[] Unit;
     public Transform SpawnPointsParent;
 
     private MainUIContoller _uiController;
@@ -101,7 +101,8 @@ public class GameController : MonoBehaviour
         for (int i = 0; i < units.Length; i++)
         {
             Transform selectedPoint = spawnpoints[Random.Range(0, spawnpoints.Count)];
-            units[i] = Instantiate(Unit, selectedPoint.position, selectedPoint.rotation).GetComponent<Unit>();
+            int unitIndexer = i % Unit.Length;
+            units[i] = Instantiate(Unit[i], selectedPoint.position, selectedPoint.rotation).GetComponent<Unit>();
             units[i].gameObject.SetActive(true);
             units[i].SetPositionType((PositionType)Convert.ToInt32(selectedPoint.tag));
             spawnpoints.Remove(selectedPoint);
